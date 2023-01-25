@@ -10,12 +10,12 @@ public class Char1_movement : NetworkBehaviour
     [SerializeField] private Transform Zombo1;
     private NetworkVariable<int> randomNumber = new NetworkVariable<int>(1,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
     //private NetworkVariable<int> day = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-
+    
     Rigidbody2D rb;
     Transform tr;
     float horizontal;
     float vertical;
-
+    public Animator animator;
     public float runSpeed = 10.0f;
     private Vector2 moveDirection;
     
@@ -28,7 +28,10 @@ public class Char1_movement : NetworkBehaviour
         rb = GetComponent<Rigidbody2D>();
         
     }
-    
+    public override void OnNetworkSpawn()
+    {
+       gameObject.tag = "Player";
+    }
     // Update is called once per frame
     void Update()
     {
@@ -37,6 +40,7 @@ public class Char1_movement : NetworkBehaviour
         randomNumber.Value= Random.Range(0,100);
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
+        
         if (Input.GetKeyDown("space"))
         {
             print("space key was pressed " + OwnerClientId);
@@ -49,6 +53,9 @@ public class Char1_movement : NetworkBehaviour
     {
         if (!IsOwner) return;
         moveDirection = new Vector2(horizontal, vertical).normalized;
+        animator.SetFloat("horizontal", moveDirection.x);
+        animator.SetFloat("vertical", moveDirection.y);
+        animator.SetFloat("speed", moveDirection.sqrMagnitude);
         rb.velocity = new Vector2(moveDirection.x * runSpeed, moveDirection.y * runSpeed);   
     }
     [ServerRpc]

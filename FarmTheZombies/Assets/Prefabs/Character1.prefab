@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3892461017772911080}
   - component: {fileID: 8225278804956297453}
   - component: {fileID: 3377162101209050425}
+  - component: {fileID: -5223539235634904251}
   m_Layer: 0
   m_Name: Character1
   m_TagString: Untagged
@@ -159,6 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Zombo1: {fileID: 8377743458088866787, guid: 9add9ae34a432c54687803b0681a9114, type: 3}
+  animator: {fileID: 1379175864051945433}
   runSpeed: 300
 --- !u!114 &3377162101209050425
 MonoBehaviour:
@@ -186,3 +188,17 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &-5223539235634904251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4006822470209064146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8deae8091111f4eb30a56c1f4e0d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 1379175864051945433}
