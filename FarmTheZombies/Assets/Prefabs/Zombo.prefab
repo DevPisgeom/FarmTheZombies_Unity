@@ -97,7 +97,8 @@ GameObject:
   - component: {fileID: 8377743458088866785}
   - component: {fileID: 8377743458088866784}
   - component: {fileID: 2505046077910747045}
-  - component: {fileID: -4664317141329231911}
+  - component: {fileID: -6080285746454254410}
+  - component: {fileID: 7849528350397492607}
   m_Layer: 0
   m_Name: Zombo
   m_TagString: Untagged
@@ -191,10 +192,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a647115d468fce4aa2ea0d6b77f45e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 3439067810300226717, guid: 03a8f1e823a8c7b4697c9d23db5b32bd, type: 3}
-  speed: 3
-  rotate_speed: 0.01
---- !u!114 &-4664317141329231911
+  target:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  target_tr: {fileID: 0}
+  movement_speed: 30
+  rotate_speed: 0.02
+--- !u!114 &-6080285746454254410
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -203,12 +208,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8377743458088866789}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncPositionX: 1
   SyncPositionY: 1
-  SyncPositionZ: 0
+  SyncPositionZ: 1
   SyncRotAngleX: 1
   SyncRotAngleY: 1
   SyncRotAngleZ: 1
@@ -220,6 +225,20 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &7849528350397492607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8377743458088866789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 8377743458088866786}
 --- !u!1 &8377743459124885352
 GameObject:
   m_ObjectHideFlags: 0

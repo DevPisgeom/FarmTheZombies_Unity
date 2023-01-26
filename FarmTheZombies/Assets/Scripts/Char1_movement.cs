@@ -8,7 +8,7 @@ public class Char1_movement : NetworkBehaviour
     // Start is called before the first frame update
 
     [SerializeField] private Transform Zombo1;
-    private NetworkVariable<int> randomNumber = new NetworkVariable<int>(1,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
+    private NetworkVariable<int> currentDay = new NetworkVariable<int>(1,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Server);
     //private NetworkVariable<int> day = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     
     Rigidbody2D rb;
@@ -37,7 +37,7 @@ public class Char1_movement : NetworkBehaviour
     {
         //Debug.Log(OwnerClientId + "; randomNumber: " + randomNumber.Value);
         if (!IsOwner) return;
-        randomNumber.Value= Random.Range(0,100);
+        //randomNumber.Value= Random.Range(0,100);
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
         
@@ -56,13 +56,22 @@ public class Char1_movement : NetworkBehaviour
         animator.SetFloat("horizontal", moveDirection.x);
         animator.SetFloat("vertical", moveDirection.y);
         animator.SetFloat("speed", moveDirection.sqrMagnitude);
-        rb.velocity = new Vector2(moveDirection.x * runSpeed, moveDirection.y * runSpeed);   
+        rb.velocity = new Vector2(moveDirection.x * runSpeed, moveDirection.y * runSpeed);
+        
     }
     [ServerRpc]
     public void TestServerRpc()
     {
-        Debug.Log(NetworkManager.Singleton.IsServer);
-        Transform spawnedObjectTransform = Instantiate(Zombo1);
-        spawnedObjectTransform.GetComponent<NetworkObject>().Spawn(true);
+        //Debug.Log(NetworkManager.Singleton.IsServer);
+        currentDay= new NetworkVariable<int>(currentDay.Value+1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        for (int i = 0; i < currentDay.Value; i++)
+        {
+            Transform spawnedObjectTransform = Instantiate(Zombo1);
+
+            spawnedObjectTransform.GetComponent<NetworkObject>().Spawn(true);
+        }
+        
+
+        
     }
 }
