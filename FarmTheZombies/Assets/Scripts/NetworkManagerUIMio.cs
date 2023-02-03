@@ -11,8 +11,9 @@ public class NetworkManagerUIMio : MonoBehaviour
     [SerializeField] private Button HostBtn;
     [SerializeField] private Button ClientBtn;
     [SerializeField] private Button DayBtn;
-
+    public string inputIp;
     private void Awake(){
+
         ServerBtn.onClick.AddListener(() => {
             NetworkManager.Singleton.StartServer();
         });
@@ -26,5 +27,6 @@ public class NetworkManagerUIMio : MonoBehaviour
             NetworkManager.Singleton.StartHost();
         });
     }
+    
 
 }

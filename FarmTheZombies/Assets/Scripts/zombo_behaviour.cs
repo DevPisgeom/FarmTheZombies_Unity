@@ -11,27 +11,59 @@ public class zombo_behaviour : NetworkBehaviour
     public Transform target_tr;
     public float movement_speed = 100f;
     public float rotate_speed = 0.02f;
+    private int randx;
+    private int randy;
     // Start is called before the first frame update
     public override void OnNetworkSpawn()
     {
-        if (NetworkManager.Singleton.IsServer)
-        {
-           //Debug.Log(NetworkBehaviour.IsOwnedByServer);
-            tr = GetComponent<Transform>();
-            print("ZOMBOO");
-
-            tr.position = new Vector3(Random.Range(0,500), Random.Range(0,500),0);
-            rb = GetComponent<Rigidbody2D>();
-          
-        }
+        
     }
     void Start()
     {
         if (NetworkManager.Singleton.IsServer)
         {
+            //Debug.Log(NetworkBehaviour.IsOwnedByServer);
             tr = GetComponent<Transform>();
             print("ZOMBOO");
-            tr.position = new Vector3(Random.Range(0, 500), Random.Range(0, 500), 0);
+
+            if (Random.Range(0, 2) == 0)
+            {
+                Debug.Log("first");
+                randx = Random.Range(-500, -700);
+                if (Random.Range(0, 2) == 0)
+                {
+                    Debug.Log("Second");
+                    //top left
+                    randy = Random.Range(1000, 1200);
+                    tr.position = new Vector3(randx, randy, 0);
+                }
+                else
+                {
+                    //bottom left
+                    randy = Random.Range(-400, -600);
+                    tr.position = new Vector3(randx, randy, 0);
+                }
+
+                //tr.position = new Vector3(Random.Range(-300,-200), Random.Range(-200, 500), 0);
+
+            }
+            else
+            {
+                randx = Random.Range(1600, 1800);
+                if (Random.Range(0, 2) == 0)
+                {
+                    //top right
+                    randy = Random.Range(1000, 1200);
+                    tr.position = new Vector3(randx, randy, 0);
+                }
+                else
+                {
+                    //bottom right
+                    randy = Random.Range(-400, -600);
+                    tr.position = new Vector3(randx, randy, 0);
+                }
+            }
+
             rb = GetComponent<Rigidbody2D>();
 
         }
@@ -94,8 +126,8 @@ public class zombo_behaviour : NetworkBehaviour
             tr.localRotation = Quaternion.Slerp(transform.localRotation, q, rotate_speed);
         }
         
-        Debug.Log("ZIOPERA");
-        Debug.Log(transform.localRotation);
+        //Debug.Log("ZIOPERA");
+        //Debug.Log(transform.localRotation);
         //Debug.Log(q);
 
     }
