@@ -27,6 +27,19 @@ public class NetworkManagerUIMio : MonoBehaviour
             NetworkManager.Singleton.StartHost();
         });
     }
-    
+
+    /*public void GetString(string str)
+    {
+        
+        
+        NetworkManager.Singleton.GetComponent<Unity.Netcode.Transports.UTP.UnityTransport>().SetConnectionData(
+        str,  // The IP address is a string
+        (ushort)7777 // The port number is an unsigned short
+        );
+        //ConnectionData.Address = ipInput;
+        //Unity.Netcode.Transports.UTP.UnityTransport.SetConnectionData(str,7777);
+    }
+    */
+
 
 }
