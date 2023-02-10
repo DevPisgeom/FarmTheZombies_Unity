@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1562143410452867655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8980573561319837959}
+  m_Layer: 0
+  m_Name: firepoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8980573561319837959
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562143410452867655}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.91, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2603052294922634940}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4006822470209064146
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,6 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Zombo1: {fileID: 8377743458088866787, guid: 9add9ae34a432c54687803b0681a9114, type: 3}
+  clients: []
   animator: {fileID: 1379175864051945433}
   runSpeed: 300
 --- !u!114 &3377162101209050425
@@ -249,6 +281,14 @@ PrefabInstance:
       propertyPath: tr
       value: 
       objectReference: {fileID: 2603052294922634940}
+    - target: {fileID: 2457192724419353382, guid: a7cbe4279fb4f1c41862dff5e6dfc085, type: 3}
+      propertyPath: firepoint
+      value: 
+      objectReference: {fileID: 8980573561319837959}
+    - target: {fileID: 2457192724419353382, guid: a7cbe4279fb4f1c41862dff5e6dfc085, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 8573058266373510098, guid: 7254d280b1b78e144be80cae3eaf1819, type: 3}
     - target: {fileID: 2457192724419353382, guid: a7cbe4279fb4f1c41862dff5e6dfc085, type: 3}
       propertyPath: rotate_speed
       value: 0.03

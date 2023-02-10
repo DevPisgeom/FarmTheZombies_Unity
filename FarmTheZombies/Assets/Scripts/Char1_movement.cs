@@ -8,9 +8,14 @@ public class Char1_movement : NetworkBehaviour
     // Start is called before the first frame update
 
     [SerializeField] private Transform Zombo1;
-    private NetworkVariable<int> currentDay = new NetworkVariable<int>(1,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Server);
+    public GameObject[] clients;
+    private NetworkVariable<int> currentDay = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<bool> isDay = new NetworkVariable<bool>(true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    //private NetworkVariable<int> numberOfReady = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    //private NetworkList<int> LobbyReadyList;
+    //private NetworkVariable<bool> isReady ;
     //private NetworkVariable<int> day = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    
+
     Rigidbody2D rb;
     Transform tr;
     float horizontal;
@@ -18,19 +23,27 @@ public class Char1_movement : NetworkBehaviour
     public Animator animator;
     public float runSpeed = 10.0f;
     private Vector2 moveDirection;
+    //private bool isReady;
     
     // Start is called before the first frame update
     void Start()
     {
+        //LobbyReadyList = new NetworkList<int>();
+        
         if (!IsOwner) return;
         tr = GetComponent<Transform>();
         tr.position = new Vector3(400, 400);
         rb = GetComponent<Rigidbody2D>();
+        Debug.Log("OWNEROWNEROWNER DICOAEADASD");
+        //isReady = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         
+        //LobbyReadyList.Add((int)OwnerClientId);
+        //LobbyReadyList.Add(0);
+
     }
     public override void OnNetworkSpawn()
     {
-       gameObject.tag = "Player";
+        gameObject.tag = "Player";
     }
     // Update is called once per frame
     void Update()
@@ -40,11 +53,16 @@ public class Char1_movement : NetworkBehaviour
         //randomNumber.Value= Random.Range(0,100);
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
-        
+
         if (Input.GetKeyDown("space"))
         {
+            //isReady = new NetworkVariable<bool>(!isReady.Value, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+            //LobbyReadyList[(int)OwnerClientId] = isReady ? 1:0;
+
+            //cambia qualcosa a schermo per dire che questo client è pronto
+
             print("space key was pressed " + OwnerClientId);
-            TestServerRpc();
+            ReadyServerRpc(true);
 
         }
     }
@@ -60,18 +78,70 @@ public class Char1_movement : NetworkBehaviour
         
     }
     [ServerRpc]
-    public void TestServerRpc()
+    public void ReadyServerRpc(bool PlayerStatus)
     {
         //Debug.Log(NetworkManager.Singleton.IsServer);
-        currentDay= new NetworkVariable<int>(currentDay.Value+1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-        for (int i = 0; i < currentDay.Value; i++)
-        {
-            Transform spawnedObjectTransform = Instantiate(Zombo1);
+        if (isDay.Value) {
+            if (PlayerStatus == true)
+            {
 
-            spawnedObjectTransform.GetComponent<NetworkObject>().Spawn(true);
+                //numberOfReady = new NetworkVariable<int>(numberOfReady.Value + 1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+                //controlla se tutti i player sono pronti
+                /*
+                for(int i = 0; i < LobbyReadyList.Count; i++)
+                {
+                    if (LobbyReadyList[i] == 0)
+                    {
+                        //almeno un player trovato che non è pronto
+                        Debug.Log("Waiting For All Players To get ready");
+                        return;
+                    }
+                }
+                */
+                /*
+                print("ININININ");
+                clients = GameObject.FindGameObjectsWithTag("Player");
+                print(clients.Length);
+                for (int i = 0; i < clients.Length; i++){
+                    Char1_movement targetObjectScript = clients[i].GetComponent<Char1_movement>();
+                    print("client i:");
+                    print(i);
+                    print("isReady?:");
+                    print(targetObjectScript.isReady.Value);
+                    //print(targetObjectScript.TEST);
+                    if (targetObjectScript.isReady.Value == false)
+                    {
+                        return;
+                    }
+                }
+                //se arrivo qui allora comincia la notte
+                */
+
+                for (int i = 0; i < currentDay.Value; i++)
+                {
+                    Transform spawnedObjectTransform = Instantiate(Zombo1);
+
+                    spawnedObjectTransform.GetComponent<NetworkObject>().Spawn(true);
+                }
+                currentDay = new NetworkVariable<int>(currentDay.Value + 1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+            }
+            
+
         }
-        
+
+
+
+    }
+    
+    
+       
+}
+    /*
+    [ClientRpc]
+
+    public void GetPlayerStatusClientRpc()
+    {
 
         
     }
-}
+    */

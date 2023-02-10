@@ -9,7 +9,10 @@ public class pistola_behaviour : NetworkBehaviour
     public Transform tr;
     public Camera mainCamera;
     Vector2 mousePos;
+    public GameObject bulletPrefab;
+    public Transform firepoint;
     public float rotate_speed;
+    public float bulletForce;
     public Transform PlayerOwnerTr;
     // Start is called before the first frame update
     void Start()
@@ -22,6 +25,7 @@ public class pistola_behaviour : NetworkBehaviour
         */
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
+        bulletForce = 100f;
         
         //mainCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
         
@@ -31,8 +35,20 @@ public class pistola_behaviour : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Shoot();
+        }
         mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+    }
+    void Shoot()
+    {
+        GameObject bullet = Instantiate(bulletPrefab, firepoint.position, tr.rotation);
+        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+        //Debug.Log(tr.up);
+        bulletRb.AddForce(tr.right * bulletForce, ForceMode2D.Impulse);
+
+
     }
     private void FixedUpdate()
     {
@@ -76,7 +92,7 @@ public class pistola_behaviour : NetworkBehaviour
             }
         }*/
         rb.rotation = angle;
-        Debug.Log(angle);
+        //Debug.Log(angle);
 
 
     }
