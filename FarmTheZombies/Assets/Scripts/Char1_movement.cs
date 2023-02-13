@@ -8,6 +8,7 @@ public class Char1_movement : NetworkBehaviour
     // Start is called before the first frame update
 
     [SerializeField] private Transform Zombo1;
+    public GameObject pistola;
     public GameObject[] clients;
     private NetworkVariable<int> currentDay = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     private NetworkVariable<bool> isDay = new NetworkVariable<bool>(true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
@@ -23,14 +24,23 @@ public class Char1_movement : NetworkBehaviour
     public Animator animator;
     public float runSpeed = 10.0f;
     private Vector2 moveDirection;
-    //private bool isReady;
     
+    //private bool isReady;
+
     // Start is called before the first frame update
     void Start()
     {
         //LobbyReadyList = new NetworkList<int>();
+
         
         if (!IsOwner) return;
+        
+        //GameObject myPistola = Instantiate(pistola);
+        
+        PistolSpawnServerRpc(OwnerClientId);
+
+        
+
         tr = GetComponent<Transform>();
         tr.position = new Vector3(400, 400);
         rb = GetComponent<Rigidbody2D>();
@@ -130,6 +140,14 @@ public class Char1_movement : NetworkBehaviour
         }
 
 
+
+    }
+    [ServerRpc]
+    public void PistolSpawnServerRpc(ulong clientid)
+    {
+        GameObject myPistola = Instantiate(pistola);
+        myPistola.GetComponent<NetworkObject>().SpawnWithOwnership(clientid);
+        myPistola.GetComponent<Transform>().parent = this.GetComponent<Transform>();
 
     }
     

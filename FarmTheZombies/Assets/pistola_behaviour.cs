@@ -12,11 +12,20 @@ public class pistola_behaviour : NetworkBehaviour
     public GameObject bulletPrefab;
     public Transform firepoint;
     public float rotate_speed;
-    public float bulletForce;
+    public float bulletForce = 200f;
     public Transform PlayerOwnerTr;
+    //public ulong clientId;
+    
     // Start is called before the first frame update
     void Start()
     {
+
+        if (!IsOwner)
+        {
+            return;
+        }
+        Debug.Log("ahahahhahahahahahahahahahahhahahhahahaha");
+        Debug.Log(OwnerClientId);
         /*
         if (!IsOwner)
         {
@@ -25,37 +34,38 @@ public class pistola_behaviour : NetworkBehaviour
         */
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
-        bulletForce = 100f;
-        
+        PlayerOwnerTr= transform.parent;
+        //PlayerOwnerTr = gameObject.GetComponentInParent(System.Type Transform);
+
         //mainCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
-        
+
         mainCamera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
         if (Input.GetButtonDown("Fire1"))
         {
-            Shoot();
+            ShootServerRpc();
         }
         mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
-    void Shoot()
-    {
-        GameObject bullet = Instantiate(bulletPrefab, firepoint.position, tr.rotation);
-        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-        //Debug.Log(tr.up);
-        bulletRb.AddForce(tr.right * bulletForce, ForceMode2D.Impulse);
-
-
-    }
+    
     private void FixedUpdate()
     {
-        rb.position = new Vector3(PlayerOwnerTr.position.x -5,PlayerOwnerTr.position.y+10,0);
+        if (!IsOwner)
+        {
+            return;
+        }
+        rb.position = new Vector3(PlayerOwnerTr.position.x - 5, PlayerOwnerTr.position.y + 10, 0);
         Vector2 localPos = rb.position;
         Vector2 Direction = mousePos - localPos;
-        float angle = Mathf.Atan2(Direction.y,Direction.x)*Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg;
         //tr.Rotate (0,0,angle,Space.Self);
 
         /*if((angle <= -90 && angle >= -180) || (angle <= 180 && angle >= 90))
@@ -95,5 +105,15 @@ public class pistola_behaviour : NetworkBehaviour
         //Debug.Log(angle);
 
 
+    }
+    [ServerRpc]
+    public void ShootServerRpc()
+    {
+        GameObject bullet = Instantiate(bulletPrefab, firepoint.position, tr.rotation);
+        bullet.GetComponent<NetworkObject>().Spawn();
+        Destroy(bullet, 10f);
+        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+        //Debug.Log(tr.up);
+        bulletRb.AddForce(tr.right * bulletForce, ForceMode2D.Impulse);
     }
 }
