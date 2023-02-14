@@ -19,7 +19,7 @@ public class pistola_behaviour : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        PlayerOwnerTr = transform.parent;
         if (!IsOwner)
         {
             return;
@@ -34,7 +34,7 @@ public class pistola_behaviour : NetworkBehaviour
         */
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
-        PlayerOwnerTr= transform.parent;
+        
         //PlayerOwnerTr = gameObject.GetComponentInParent(System.Type Transform);
 
         //mainCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
@@ -62,10 +62,8 @@ public class pistola_behaviour : NetworkBehaviour
         {
             return;
         }
-        rb.position = new Vector3(PlayerOwnerTr.position.x - 5, PlayerOwnerTr.position.y + 10, 0);
-        Vector2 localPos = rb.position;
-        Vector2 Direction = mousePos - localPos;
-        float angle = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg;
+        Debug.Log("dioporcoelamadonna");
+        RotatePistolServerRpc(OwnerClientId,mousePos);
         //tr.Rotate (0,0,angle,Space.Self);
 
         /*if((angle <= -90 && angle >= -180) || (angle <= 180 && angle >= 90))
@@ -101,7 +99,7 @@ public class pistola_behaviour : NetworkBehaviour
                 tr.localRotation = Quaternion.Slerp(tr.localRotation, q, rotate_speed);
             }
         }*/
-        rb.rotation = angle;
+        
         //Debug.Log(angle);
 
 
@@ -115,5 +113,22 @@ public class pistola_behaviour : NetworkBehaviour
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
         //Debug.Log(tr.up);
         bulletRb.AddForce(tr.right * bulletForce, ForceMode2D.Impulse);
+    }
+    [ServerRpc]
+    public void RotatePistolServerRpc(ulong clientID,Vector2 mousePos)
+    {
+        rb.position = new Vector3(PlayerOwnerTr.position.x - 5, PlayerOwnerTr.position.y + 10, 0);
+        Vector2 localPos = rb.position;
+        Vector2 Direction = mousePos - localPos;
+        if (clientID == 1)
+        {
+            Debug.Log("Direction:");
+            Debug.Log(Direction);
+            Debug.Log(mousePos);
+            Debug.Log(localPos);
+        }
+        
+        float angle = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg;
+        rb.rotation = angle;
     }
 }
