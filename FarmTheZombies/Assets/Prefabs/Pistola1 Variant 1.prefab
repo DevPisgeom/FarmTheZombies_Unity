@@ -40,7 +40,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 397054203582640492, guid: a7cbe4279fb4f1c41862dff5e6dfc085, type: 3}
       propertyPath: m_Name
-      value: Pistola1 Variant
+      value: Pistola1 Variant 1
       objectReference: {fileID: 0}
     - target: {fileID: 2428440556120130471, guid: a7cbe4279fb4f1c41862dff5e6dfc085, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -56,7 +56,7 @@ PrefabInstance:
       objectReference: {fileID: 8980573562083854904}
     - target: {fileID: 2457192724419353382, guid: a7cbe4279fb4f1c41862dff5e6dfc085, type: 3}
       propertyPath: bulletForce
-      value: 300
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2457192724419353382, guid: a7cbe4279fb4f1c41862dff5e6dfc085, type: 3}
       propertyPath: bulletPrefab

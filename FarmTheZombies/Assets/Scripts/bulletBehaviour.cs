@@ -22,6 +22,8 @@ public class bulletBehaviour : NetworkBehaviour
         GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
         effect.GetComponent<NetworkObject>().Spawn();
         Destroy(effect, 0.9f);
+        
         Destroy(gameObject);
+        this.GetComponent<NetworkObject>().Despawn();
     }
 }

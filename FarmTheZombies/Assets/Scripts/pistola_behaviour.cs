@@ -12,7 +12,12 @@ public class pistola_behaviour : NetworkBehaviour
     public GameObject bulletPrefab;
     public Transform firepoint;
     public float rotate_speed;
-    public float bulletForce = 200f;
+    public float bulletForce = 0.1f;
+    public float fireRate = 0.4f;
+    public int magCapacity = 9;
+    private int magBulletsLeft = 9;
+    private float TimeShot;
+    
     public Transform PlayerOwnerTr;
     //public ulong clientId;
     
@@ -49,9 +54,10 @@ public class pistola_behaviour : NetworkBehaviour
         {
             return;
         }
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && Time.time>=TimeShot+fireRate)
         {
             ShootServerRpc();
+            TimeShot = Time.time;
         }
         mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }

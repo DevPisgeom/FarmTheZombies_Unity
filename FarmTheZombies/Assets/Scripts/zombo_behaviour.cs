@@ -31,9 +31,16 @@ public class zombo_behaviour : NetworkBehaviour
         if (collision.gameObject.tag == "Bullet")
         {
             //diventa rosso
+            Debug.Log("HITHIT");
+            m_SpriteRenderer.color = Color.red; 
             //fai tipo grunt
             //scala vita
-            health = health - 5;
+            health = health - 5f;
+            if (health <= 0f)
+            {
+               Destroy(this,0.1f);
+               this.GetComponent<NetworkObject>().Despawn();
+            }
         }
 
         
