@@ -7,15 +7,35 @@ public class zombo_behaviour : NetworkBehaviour
 {
     Rigidbody2D rb;
     Transform tr;
+    public SpriteRenderer m_SpriteRenderer;
     public GameObject[] target;
     public Transform target_tr;
     public float movement_speed = 100f;
     public float rotate_speed = 0.02f;
     private int randx;
     private int randy;
+    private float health;
     // Start is called before the first frame update
     public override void OnNetworkSpawn()
     {
+        
+        gameObject.tag = "Zombo";
+        health = 10;
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!IsServer)
+        {
+            return;
+        }
+        if (collision.gameObject.tag == "Bullet")
+        {
+            //diventa rosso
+            //fai tipo grunt
+            //scala vita
+            health = health - 5;
+        }
+
         
     }
     void Start()

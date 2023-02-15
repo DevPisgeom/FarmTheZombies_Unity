@@ -8,7 +8,10 @@ public class bulletBehaviour : NetworkBehaviour
 {
     public GameObject hitEffect;
     // Start is called before the first frame update
-    
+    public override void OnNetworkSpawn()
+    {
+        gameObject.tag = "Bullet";
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!IsServer)
