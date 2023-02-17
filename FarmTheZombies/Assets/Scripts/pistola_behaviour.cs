@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using TMPro;
 public class pistola_behaviour : NetworkBehaviour
 {
     //public Transform tr;
@@ -14,16 +15,21 @@ public class pistola_behaviour : NetworkBehaviour
     public float rotate_speed;
     public float bulletForce = 0.1f;
     public float fireRate = 0.4f;
+    public float reloadSpeed = 0.8f;
     public int magCapacity = 9;
     private int magBulletsLeft = 9;
     private float TimeShot;
-    
+    public Animator anim;
+    public TextMeshProUGUI magText;
+    public float reloadTimeAccumulator=0f;
+
     public Transform PlayerOwnerTr;
     //public ulong clientId;
     
     // Start is called before the first frame update
     void Start()
     {
+        magText.text = magBulletsLeft.ToString()+" / "+ magCapacity.ToString();
         PlayerOwnerTr = transform.parent;
         if (!IsOwner)
         {
@@ -54,11 +60,28 @@ public class pistola_behaviour : NetworkBehaviour
         {
             return;
         }
-        if (Input.GetButtonDown("Fire1") && Time.time>=TimeShot+fireRate)
+        if (Input.GetButtonDown("Fire1") && Time.time>=TimeShot+fireRate+reloadTimeAccumulator)
         {
-            ShootServerRpc();
-            TimeShot = Time.time;
+            if (magBulletsLeft == 0)
+            {
+                //play animazione ricarica 
+                anim.SetTrigger("reloadTrigger");
+                //Reload
+                magBulletsLeft = magCapacity;
+                
+                reloadTimeAccumulator = reloadSpeed;
+                magText.text = magBulletsLeft.ToString() + " / " + magCapacity.ToString();
+            }
+            else {
+                magText.text = magBulletsLeft.ToString() + " / " + magCapacity.ToString();
+                ShootServerRpc();
+                magBulletsLeft = magBulletsLeft - 1;
+                magText.text = magBulletsLeft.ToString() + " / " + magCapacity.ToString();
+                TimeShot = Time.time;
+                reloadTimeAccumulator = 0f;
+            }
         }
+
         mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
     
